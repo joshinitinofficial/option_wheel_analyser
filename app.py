@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import re
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 # ============================
 # PAGE CONFIG
@@ -27,12 +28,12 @@ body {
     text-align: center;
 }
 .metric-title {
-    font-size: 12px;
+    font-size: 11px;
     color: #9aa4b2;
 }
 .metric-value {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 600;
     color: white;
 }
 </style>
@@ -45,7 +46,7 @@ st.title("🌀 Option Wheel Performance Dashboard")
 # ============================
 raw_text = st.text_area(
     "Paste Backtest Output",
-    height=260
+    height=240
 )
 
 # ============================
@@ -120,26 +121,29 @@ if raw_text.strip():
     card(c4, "Total Return", f"{summary.get('Total Return %', 0):.2f}%")
     card(c5, "Avg Monthly PnL", f"₹{avg_monthly:,.0f}")
 
-    st.markdown("")
-
     # ============================
-    # CHART ROW (SIDE BY SIDE)
+    # CHARTS ROW
     # ============================
-    left, right = st.columns([2, 1])
+    left, right = st.columns([2.2, 1])
 
     # -------- EQUITY CURVE --------
     with left:
         st.markdown("**📈 Equity Curve**")
 
-        fig, ax = plt.subplots(figsize=(6, 3))
+        fig, ax = plt.subplots(figsize=(6.5, 3))
+
         ax.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
         ax.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
 
         ax.set_facecolor("#0e1117")
         fig.patch.set_facecolor("#0e1117")
-        ax.tick_params(colors="white", labelsize=9)
+
+        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+
+        ax.tick_params(colors="white", labelsize=8)
         ax.spines[:].set_color("#444")
-        ax.set_ylabel("PnL", color="white", fontsize=9)
+        ax.set_ylabel("PnL", color="white", fontsize=8)
 
         st.pyplot(fig, use_container_width=True)
 
@@ -148,13 +152,27 @@ if raw_text.strip():
         st.markdown("**📊 Monthly PnL**")
 
         fig, ax = plt.subplots(figsize=(4, 3))
+
         colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
 
-        ax.bar(monthly["Month"], monthly["Profit"], color=colors)
+        ax.bar(
+            monthly["Month"],
+            monthly["Profit"],
+            color=colors,
+            width=0.65
+        )
+
+        # Dynamic Y scaling (visual padding)
+        ymax = monthly["Profit"].max()
+        ymin = monthly["Profit"].min()
+        pad = (ymax - ymin) * 0.25
+        ax.set_ylim(ymin - pad, ymax + pad)
+
         ax.set_facecolor("#0e1117")
         fig.patch.set_facecolor("#0e1117")
-        ax.tick_params(axis="x", rotation=90, colors="white", labelsize=8)
-        ax.tick_params(axis="y", colors="white", labelsize=8)
+
+        ax.tick_params(axis="x", rotation=90, colors="white", labelsize=7)
+        ax.tick_params(axis="y", colors="white", labelsize=7)
         ax.spines[:].set_color("#444")
 
         st.pyplot(fig, use_container_width=True)
