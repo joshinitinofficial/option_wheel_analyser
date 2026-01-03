@@ -137,9 +137,34 @@ body { background-color: #0e1117; }
 st.title("Option Wheel Performance Dashboard")
 
 # ============================
-# INPUT
+# REPORT SELECTION DROPDOWN
 # ============================
-raw_text = st.text_area("Paste Backtest Output", height=220)
+selected_report = st.selectbox(
+    "Select Backtest Report",
+    options=list(BACKTEST_REPORTS.keys())
+)
+
+# ============================
+# SESSION STATE INIT
+# ============================
+if "raw_text" not in st.session_state:
+    st.session_state.raw_text = ""
+
+# ============================
+# AUTO-FILL TEXT AREA
+# ============================
+if selected_report != "-- Paste Manually --":
+    st.session_state.raw_text = BACKTEST_REPORTS[selected_report]
+
+# ============================
+# TEXT INPUT AREA
+# ============================
+raw_text = st.text_area(
+    "Backtest Output",
+    height=220,
+    value=st.session_state.raw_text
+)
+
 
 # ============================
 # HELPERS
