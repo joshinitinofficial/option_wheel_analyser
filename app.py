@@ -8,31 +8,36 @@ import matplotlib.dates as mdates
 # ============================
 # PAGE CONFIG
 # ============================
-st.set_page_config(
-    page_title="Option Wheel Dashboard",
-    layout="wide"
-)
+st.set_page_config(page_title="Option Wheel Dashboard", layout="wide")
 
 # ============================
 # DARK THEME CSS
 # ============================
 st.markdown("""
 <style>
-body {
-    background-color: #0e1117;
+body { background-color: #0e1117; }
+
+.info-card {
+    background: #111827;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-align: center;
 }
+
 .metric-card {
     background: #161a23;
     padding: 14px;
     border-radius: 14px;
     text-align: center;
 }
-.metric-title {
+
+.card-title {
     font-size: 11px;
     color: #9aa4b2;
 }
-.metric-value {
-    font-size: 22px;
+
+.card-value {
+    font-size: 20px;
     font-weight: 600;
     color: white;
 }
@@ -44,10 +49,7 @@ st.title("🌀 Option Wheel Performance Dashboard")
 # ============================
 # INPUT
 # ============================
-raw_text = st.text_area(
-    "Paste Backtest Output",
-    height=240
-)
+raw_text = st.text_area("Paste Backtest Output", height=240)
 
 # ============================
 # PARSERS
@@ -68,18 +70,9 @@ def parse_trades(text):
         })
     return pd.DataFrame(rows)
 
-def parse_summary(text):
-    fields = {
-        "Option Profit": r"OPTION PROFIT:\s*([\d.]+)",
-        "Final Profit": r"FINAL PROFIT \(Incl\. MTM\):\s*([\d.]+)",
-        "Total Return %": r"TOTAL RETURN %:\s*([\d.]+)"
-    }
-    out = {}
-    for k, p in fields.items():
-        m = re.search(p, text)
-        if m:
-            out[k] = float(m.group(1))
-    return out
+def parse_value(text, pattern):
+    m = re.search(pattern, text)
+    return m.group(1).strip() if m else None
 
 # ============================
 # MAIN
@@ -87,15 +80,28 @@ def parse_summary(text):
 if raw_text.strip():
 
     trades = parse_trades(raw_text)
-    summary = parse_summary(raw_text)
-
     if trades.empty:
         st.error("No trades detected.")
         st.stop()
 
+    # ---- Strategy Info ----
+    scrip = parse_value(raw_text, r"Scrip\s*:\s*(\w+)")
+    pe_otm = parse_value(raw_text, r"PE OTM %\s*:\s*([\d.]+ %)")
+    ce_otm = parse_value(raw_text, r"CE OTM %\s*:\s*([\d.]+ %)")
+    lot_size = parse_value(raw_text, r"Lot Size\s*:\s*(\d+)")
+    period = parse_value(raw_text, r"Backtest Period\s*:\s*(.+)")
+
+    # ---- Summary ----
+    realised_profit = float(parse_value(raw_text, r"OPTION PROFIT:\s*([\d.]+)") or trades["Profit"].sum())
+    bond_profit = float(parse_value(raw_text, r"BOND PROFIT:\s*([\d.]+)") or 0)
+    equity_months = parse_value(raw_text, r"EQUITY MONTHS:\s*(\d+)")
+    stock_mtm = float(parse_value(raw_text, r"CURRENT STOCK MTM:\s*([\d.]+)") or 0)
+    final_profit = float(parse_value(raw_text, r"FINAL PROFIT .*:\s*([\d.]+)") or 0)
+    total_return = float(parse_value(raw_text, r"TOTAL RETURN %:\s*([\d.]+)") or 0)
+
+    # ---- Data prep ----
     trades["Expiry"] = pd.to_datetime(trades["Expiry"])
     trades = trades.sort_values("Expiry")
-
     trades["CumPnL"] = trades["Profit"].cumsum()
     trades["Month"] = trades["Expiry"].dt.to_period("M").astype(str)
 
@@ -103,78 +109,67 @@ if raw_text.strip():
     avg_monthly = monthly["Profit"].mean()
 
     # ============================
-    # TOP METRICS
+    # STRATEGY INFO ROW
     # ============================
-    c1, c2, c3, c4, c5 = st.columns(5)
+    st.markdown("### 📌 Strategy Details")
+    i1, i2, i3, i4, i5 = st.columns(5)
 
-    def card(col, title, value):
+    def info(col, title, value):
         col.markdown(f"""
-        <div class="metric-card">
-            <div class="metric-title">{title}</div>
-            <div class="metric-value">{value}</div>
+        <div class="info-card">
+            <div class="card-title">{title}</div>
+            <div class="card-value">{value}</div>
         </div>
         """, unsafe_allow_html=True)
 
-    card(c1, "Total Trades", len(trades))
-    card(c2, "Option Profit", f"₹{summary.get('Option Profit', trades['Profit'].sum()):,.0f}")
-    card(c3, "Final Profit", f"₹{summary.get('Final Profit', 0):,.0f}")
-    card(c4, "Total Return", f"{summary.get('Total Return %', 0):.2f}%")
-    card(c5, "Avg Monthly PnL", f"₹{avg_monthly:,.0f}")
+    info(i1, "Scrip", scrip)
+    info(i2, "PE OTM %", pe_otm)
+    info(i3, "CE OTM %", ce_otm)
+    info(i4, "Lot Size", lot_size)
+    info(i5, "Backtest Period", period)
 
     # ============================
-    # CHARTS ROW
+    # PERFORMANCE METRICS
+    # ============================
+    st.markdown("### 📊 Performance Summary")
+    m1, m2, m3, m4, m5 = st.columns(5)
+
+    info(m1, "Realised Profit", f"₹{realised_profit:,.0f}")
+    info(m2, "Bond Profit", f"₹{bond_profit:,.0f}")
+    info(m3, "Equity Holding Months", equity_months)
+    info(m4, "Current Stock MTM", f"₹{stock_mtm:,.0f}")
+    info(m5, "Total Return", f"{total_return:.2f}%")
+
+    # ============================
+    # CHARTS
     # ============================
     left, right = st.columns([2.2, 1])
 
-    # -------- EQUITY CURVE --------
     with left:
         st.markdown("**📈 Equity Curve**")
-
         fig, ax = plt.subplots(figsize=(6.5, 3))
-
         ax.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
         ax.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
-
-        ax.set_facecolor("#0e1117")
-        fig.patch.set_facecolor("#0e1117")
-
         ax.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
-
         ax.tick_params(colors="white", labelsize=8)
-        ax.spines[:].set_color("#444")
-        ax.set_ylabel("PnL", color="white", fontsize=8)
-
-        st.pyplot(fig, use_container_width=True)
-
-    # -------- MONTHLY PNL --------
-    with right:
-        st.markdown("**📊 Monthly PnL**")
-
-        fig, ax = plt.subplots(figsize=(4, 3))
-
-        colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
-
-        ax.bar(
-            monthly["Month"],
-            monthly["Profit"],
-            color=colors,
-            width=0.65
-        )
-
-        # Dynamic Y scaling (visual padding)
-        ymax = monthly["Profit"].max()
-        ymin = monthly["Profit"].min()
-        pad = (ymax - ymin) * 0.25
-        ax.set_ylim(ymin - pad, ymax + pad)
-
         ax.set_facecolor("#0e1117")
         fig.patch.set_facecolor("#0e1117")
-
-        ax.tick_params(axis="x", rotation=90, colors="white", labelsize=7)
-        ax.tick_params(axis="y", colors="white", labelsize=7)
         ax.spines[:].set_color("#444")
+        st.pyplot(fig, use_container_width=True)
 
+    with right:
+        st.markdown("**📊 Monthly PnL**")
+        fig, ax = plt.subplots(figsize=(4, 3))
+        colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
+        ax.bar(monthly["Month"], monthly["Profit"], color=colors, width=0.65)
+        pad = (monthly["Profit"].max() - monthly["Profit"].min()) * 0.25
+        ax.set_ylim(monthly["Profit"].min() - pad, monthly["Profit"].max() + pad)
+        ax.tick_params(axis="x", rotation=90, labelsize=7, colors="white")
+        ax.tick_params(axis="y", labelsize=7, colors="white")
+        ax.set_facecolor("#0e1117")
+        fig.patch.set_facecolor("#0e1117")
+        ax.spines[:].set_color("#444")
         st.pyplot(fig, use_container_width=True)
 
     # ============================
