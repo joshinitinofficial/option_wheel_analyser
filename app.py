@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from matplotlib.gridspec import GridSpec
 
 # ============================
 # PAGE CONFIG
@@ -10,7 +11,7 @@ import matplotlib.dates as mdates
 st.set_page_config(page_title="Option Wheel Dashboard", layout="wide")
 
 # ============================
-# GLOBAL CSS
+# CSS
 # ============================
 st.markdown("""
 <style>
@@ -35,10 +36,7 @@ body { background-color: #0e1117; }
     color: white;
 }
 
-/* small vertical gap helper */
-.v-gap {
-    margin-top: 8px;
-}
+.v-gap { margin-top: 10px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -147,53 +145,41 @@ if raw_text.strip():
     card(r2[4], "Drawdown", drawdown_text)
 
     # ============================
-    # CHARTS (PERFECT ALIGNMENT)
+    # ONE FIGURE – TWO CHARTS
     # ============================
-    left, right = st.columns([2.2, 1])
+    fig = plt.figure(figsize=(14, 4))
+    gs = GridSpec(1, 2, width_ratios=[2.2, 1])
 
-    # ---- Equity Curve ----
-    with left:
-        fig, ax = plt.subplots(figsize=(6.5, 3))
-        ax.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
-        ax.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
+    ax1 = fig.add_subplot(gs[0])
+    ax2 = fig.add_subplot(gs[1])
 
-        ax.text(0.5, 0.96, "Equity Curve",
-                transform=ax.transAxes,
-                ha="center", va="top",
-                fontsize=9, color="#cbd5e1")
+    # Equity Curve
+    ax1.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
+    ax1.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
+    ax1.text(0.5, 0.96, "Equity Curve", transform=ax1.transAxes,
+             ha="center", va="top", fontsize=9, color="#cbd5e1")
+    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+    ax1.tick_params(colors="white", labelsize=8)
 
-        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
-        ax.tick_params(colors="white", labelsize=8)
+    # Monthly PnL
+    colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
+    ax2.bar(monthly["Month"], monthly["Profit"], color=colors, width=0.65)
+    ax2.text(0.5, 0.96, "Monthly PnL", transform=ax2.transAxes,
+             ha="center", va="top", fontsize=9, color="#cbd5e1")
+    pad = (monthly["Profit"].max() - monthly["Profit"].min()) * 0.25
+    ax2.set_ylim(monthly["Profit"].min() - pad, monthly["Profit"].max() + pad)
+    ax2.tick_params(axis="x", rotation=90, labelsize=7, colors="white")
+    ax2.tick_params(axis="y", labelsize=7, colors="white")
+
+    for ax in [ax1, ax2]:
         ax.set_facecolor("#0e1117")
-        fig.patch.set_facecolor("#0e1117")
         ax.spines[:].set_color("#444")
 
-        st.pyplot(fig, use_container_width=True)
+    fig.patch.set_facecolor("#0e1117")
+    fig.subplots_adjust(left=0.04, right=0.99, top=0.92, bottom=0.2, wspace=0.15)
 
-    # ---- Monthly PnL ----
-    with right:
-        fig, ax = plt.subplots(figsize=(4, 3))
-        colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
-        ax.bar(monthly["Month"], monthly["Profit"], color=colors, width=0.65)
+    st.pyplot(fig, use_container_width=True)
 
-        ax.text(0.5, 0.96, "Monthly PnL",
-                transform=ax.transAxes,
-                ha="center", va="top",
-                fontsize=9, color="#cbd5e1")
-
-        pad = (monthly["Profit"].max() - monthly["Profit"].min()) * 0.25
-        ax.set_ylim(monthly["Profit"].min() - pad, monthly["Profit"].max() + pad)
-        ax.tick_params(axis="x", rotation=90, labelsize=7, colors="white")
-        ax.tick_params(axis="y", labelsize=7, colors="white")
-        ax.set_facecolor("#0e1117")
-        fig.patch.set_facecolor("#0e1117")
-        ax.spines[:].set_color("#444")
-
-        st.pyplot(fig, use_container_width=True)
-
-    # ============================
-    # TRADE LOG
-    # ============================
     with st.expander("View Full Trade Log"):
         st.dataframe(trades, use_container_width=True)
