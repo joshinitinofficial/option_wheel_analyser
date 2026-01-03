@@ -212,15 +212,27 @@ if raw_text.strip():
     ax1.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
     ax1.tick_params(colors="white", labelsize=8)
 
-    # Monthly PnL
-    colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
-    ax2.bar(monthly["Month"], monthly["Profit"], color=colors, width=0.65)
-    ax2.text(0.5, 0.96, "Monthly PnL", transform=ax2.transAxes,
-             ha="center", va="top", fontsize=9, color="#cbd5e1")
-    pad = (monthly["Profit"].max() - monthly["Profit"].min()) * 0.25
-    ax2.set_ylim(monthly["Profit"].min() - pad, monthly["Profit"].max() + pad)
-    ax2.tick_params(axis="x", rotation=90, labelsize=7, colors="white")
+    # Monthly PnL (Year-wise X-axis)
+    monthly["Year"] = pd.to_datetime(monthly["Month"]).dt.year
+    yearly = monthly.groupby("Year")["Profit"].sum().reset_index()
+
+    colors = ["#22c55e" if x >= 0 else "#ef4444" for x in yearly["Profit"]]
+
+    ax2.bar(yearly["Year"].astype(str), yearly["Profit"], color=colors, width=0.6)
+    
+    ax2.text(
+        0.5, 0.96, "Monthly PnL",
+        transform=ax2.transAxes,
+        ha="center", va="top",
+        fontsize=9, color="#cbd5e1"
+    )
+
+    pad = (yearly["Profit"].max() - yearly["Profit"].min()) * 0.25
+    ax2.set_ylim(yearly["Profit"].min() - pad, yearly["Profit"].max() + pad)
+
+    ax2.tick_params(axis="x", labelsize=8, colors="white")
     ax2.tick_params(axis="y", labelsize=7, colors="white")
+
 
     for ax in [ax1, ax2]:
         ax.set_facecolor("#0e1117")
