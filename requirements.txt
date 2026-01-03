@@ -4,4 +4,3 @@ numpy
 matplotlib
 pytesseract
 Pillow
-opencv-python
