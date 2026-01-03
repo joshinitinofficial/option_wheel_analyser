@@ -35,9 +35,8 @@ body { background-color: #0e1117; }
     color: white;
 }
 
-/* small vertical gap helper */
 .v-gap {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -75,6 +74,12 @@ def card(col, title, value):
         <div class="card-value">{value}</div>
     </div>
     """, unsafe_allow_html=True)
+
+def style_axes(fig, ax):
+    fig.subplots_adjust(left=0.06, right=0.98, top=0.92, bottom=0.18)
+    ax.set_facecolor("#0e1117")
+    fig.patch.set_facecolor("#0e1117")
+    ax.spines[:].set_color("#444")
 
 # ============================
 # MAIN
@@ -147,7 +152,7 @@ if raw_text.strip():
     card(r2[4], "Drawdown", drawdown_text)
 
     # ============================
-    # CHARTS (PERFECT ALIGNMENT)
+    # CHARTS (PERFECTLY ALIGNED)
     # ============================
     left, right = st.columns([2.2, 1])
 
@@ -157,18 +162,18 @@ if raw_text.strip():
         ax.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
         ax.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
 
-        ax.text(0.5, 0.96, "Equity Curve",
-                transform=ax.transAxes,
-                ha="center", va="top",
-                fontsize=9, color="#cbd5e1")
+        ax.text(
+            0.5, 0.96, "Equity Curve",
+            transform=ax.transAxes,
+            ha="center", va="top",
+            fontsize=9, color="#cbd5e1"
+        )
 
         ax.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
         ax.tick_params(colors="white", labelsize=8)
-        ax.set_facecolor("#0e1117")
-        fig.patch.set_facecolor("#0e1117")
-        ax.spines[:].set_color("#444")
 
+        style_axes(fig, ax)
         st.pyplot(fig, use_container_width=True)
 
     # ---- Monthly PnL ----
@@ -177,19 +182,20 @@ if raw_text.strip():
         colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
         ax.bar(monthly["Month"], monthly["Profit"], color=colors, width=0.65)
 
-        ax.text(0.5, 0.96, "Monthly PnL",
-                transform=ax.transAxes,
-                ha="center", va="top",
-                fontsize=9, color="#cbd5e1")
+        ax.text(
+            0.5, 0.96, "Monthly PnL",
+            transform=ax.transAxes,
+            ha="center", va="top",
+            fontsize=9, color="#cbd5e1"
+        )
 
         pad = (monthly["Profit"].max() - monthly["Profit"].min()) * 0.25
         ax.set_ylim(monthly["Profit"].min() - pad, monthly["Profit"].max() + pad)
+
         ax.tick_params(axis="x", rotation=90, labelsize=7, colors="white")
         ax.tick_params(axis="y", labelsize=7, colors="white")
-        ax.set_facecolor("#0e1117")
-        fig.patch.set_facecolor("#0e1117")
-        ax.spines[:].set_color("#444")
 
+        style_axes(fig, ax)
         st.pyplot(fig, use_container_width=True)
 
     # ============================
