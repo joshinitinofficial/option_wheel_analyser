@@ -6,6 +6,100 @@ import matplotlib.dates as mdates
 from matplotlib.gridspec import GridSpec
 
 # ============================
+# HARDCODED BACKTEST REPORTS
+# ============================
+BACKTEST_REPORTS = {
+    "-- Paste Manually --": "",
+    
+    "NIFTY OWS with 1% OTM from Jan24 to Dec25": """
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : NIFTY
+PE OTM %           : 1.00 %
+CE OTM %           : 1.00 %
+Lot Size           : 65
+Backtest Period    : 2024-01-25 → 2025-12-30
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium    Profit    ITM
+0   2024-01-25   PE   21600   206.95  13451.75   True
+1   2024-02-29   CE   21800   219.70  27280.50   True
+2   2024-03-28   PE   21800   196.65  12782.25  False
+3   2024-04-25   PE   22100   167.25  10871.25  False
+4   2024-05-30   PE   22300   194.45  12639.25  False
+5   2024-06-27   PE   22300   418.15  27179.75  False
+6   2024-07-25   PE   23800   234.90  15268.50  False
+7   2024-08-29   PE   24200   262.75  17078.75  False
+8   2024-09-26   PE   24900   197.45  12834.25  False
+9   2024-10-31   PE   25900   208.40  13546.00   True
+10  2024-11-28   CE   26200    13.65    887.25  False
+11  2024-12-26   CE   26200     7.50    487.50  False
+12  2025-01-30   CE   26200     8.05    523.25  False
+13  2025-02-27   CE   26200     7.80    507.00  False
+14  2025-06-26   CE   26200    50.40   3276.00  False
+15  2025-07-31   CE   26200   136.30   8859.50  False
+16  2025-08-28   CE   26200    14.50    942.50  False
+17  2025-09-30   CE   26200    13.15    854.75  False
+18  2025-10-28   CE   26200    10.10    656.50  False
+19  2025-11-25   CE   26200   268.95  17481.75  False
+20  2025-12-30   CE   26200   267.30  17374.50  False
+
+💰 REALIZED PROFIT: 214782.75
+🏦 BOND PROFIT: 49140.0
+📦 EQUITY MONTHS: 17
+📆 TOTAL MONTHS: 24
+💼 TOTAL CAPITAL: 1404000
+📊 CURRENT STOCK MTM: 2723.5
+📍 CURRENT SPOT PRICE: 25941.9
+✅ FINAL PROFIT (Incl. MTM): 266646.25
+📈 TOTAL RETURN %: 18.99
+""",
+
+    "NIFTY OWS with 2% OTM from Jan24 to Dec25": """
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : NIFTY
+PE OTM %           : 2.00 %
+CE OTM %           : 2.00 %
+Lot Size           : 65
+Backtest Period    : 2024-01-25 → 2025-12-30
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium    Profit    ITM
+0   2024-01-25   PE   21300   134.30   8729.50  False
+1   2024-02-29   PE   20900   138.00   8970.00  False
+2   2024-03-28   PE   21600   142.40   9256.00  False
+3   2024-04-25   PE   21800    99.00   6435.00  False
+4   2024-05-30   PE   22100   142.15   9239.75  False
+5   2024-06-27   PE   22100   347.80  22607.00  False
+6   2024-07-25   PE   23600   178.00  11570.00  False
+7   2024-08-29   PE   23900   172.40  11206.00  False
+8   2024-09-26   PE   24600   126.00   8190.00  False
+9   2024-10-31   PE   25700   159.00  10335.00   True
+10  2024-11-28   CE   26200    13.65    887.25  False
+11  2024-12-26   CE   26200     7.50    487.50  False
+12  2025-01-30   CE   26200     8.05    523.25  False
+13  2025-02-27   CE   26200     7.80    507.00  False
+14  2025-06-26   CE   26200    50.40   3276.00  False
+15  2025-07-31   CE   26200   136.30   8859.50  False
+16  2025-08-28   CE   26200    14.50    942.50  False
+17  2025-09-30   CE   26200    13.15    854.75  False
+18  2025-10-28   CE   26200    10.10    656.50  False
+19  2025-11-25   CE   26200   268.95  17481.75  False
+20  2025-12-30   CE   26200   267.30  17374.50  False
+
+💰 REALIZED PROFIT: 158388.75
+🏦 BOND PROFIT: 62302.5
+📦 EQUITY MONTHS: 15
+📆 TOTAL MONTHS: 24
+💼 TOTAL CAPITAL: 1384500
+📊 CURRENT STOCK MTM: 15723.5
+📍 CURRENT SPOT PRICE: 25941.9
+✅ FINAL PROFIT (Incl. MTM): 236414.75
+📈 TOTAL RETURN %: 17.08
+"""
+}
+
+
+# ============================
 # PAGE CONFIG
 # ============================
 st.set_page_config(page_title="Option Wheel Dashboard", layout="wide")
