@@ -141,7 +141,7 @@ Bond Return (Ann.) : 6.00 %
 📈 TOTAL RETURN %: 17.34
 """,
     
-  "NIFTY OWS with 5% OTM from Jan24 to Dec25": """
+  "NIFTY OWS with 1% OTM from Jan19 to Dec25": """
     🌀 OPTION WHEEL BACKTEST RESULT
 Scrip              : NIFTY
 PE OTM %           : 1.00 %
