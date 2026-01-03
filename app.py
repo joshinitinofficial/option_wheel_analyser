@@ -22,16 +22,16 @@ body {
 }
 .metric-card {
     background: #161a23;
-    padding: 16px;
+    padding: 14px;
     border-radius: 14px;
     text-align: center;
 }
 .metric-title {
-    font-size: 13px;
+    font-size: 12px;
     color: #9aa4b2;
 }
 .metric-value {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
     color: white;
 }
@@ -45,7 +45,7 @@ st.title("🌀 Option Wheel Performance Dashboard")
 # ============================
 raw_text = st.text_area(
     "Paste Backtest Output",
-    height=320
+    height=260
 )
 
 # ============================
@@ -70,7 +70,6 @@ def parse_trades(text):
 def parse_summary(text):
     fields = {
         "Option Profit": r"OPTION PROFIT:\s*([\d.]+)",
-        "Bond Profit": r"BOND PROFIT:\s*([\d.]+)",
         "Final Profit": r"FINAL PROFIT \(Incl\. MTM\):\s*([\d.]+)",
         "Total Return %": r"TOTAL RETURN %:\s*([\d.]+)"
     }
@@ -121,44 +120,47 @@ if raw_text.strip():
     card(c4, "Total Return", f"{summary.get('Total Return %', 0):.2f}%")
     card(c5, "Avg Monthly PnL", f"₹{avg_monthly:,.0f}")
 
-    st.markdown("---")
+    st.markdown("")
 
     # ============================
-    # EQUITY CURVE
+    # CHART ROW (SIDE BY SIDE)
     # ============================
-    st.subheader("📈 Equity Curve")
+    left, right = st.columns([2, 1])
 
-    fig, ax = plt.subplots(figsize=(10, 4))
-    ax.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
-    ax.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
+    # -------- EQUITY CURVE --------
+    with left:
+        st.markdown("**📈 Equity Curve**")
 
-    ax.set_facecolor("#0e1117")
-    fig.patch.set_facecolor("#0e1117")
-    ax.tick_params(colors="white")
-    ax.spines[:].set_color("#444")
-    ax.set_ylabel("PnL", color="white")
+        fig, ax = plt.subplots(figsize=(6, 3))
+        ax.plot(trades["Expiry"], trades["CumPnL"], color="#2dd4bf", linewidth=2)
+        ax.fill_between(trades["Expiry"], trades["CumPnL"], alpha=0.15, color="#2dd4bf")
 
-    st.pyplot(fig)
+        ax.set_facecolor("#0e1117")
+        fig.patch.set_facecolor("#0e1117")
+        ax.tick_params(colors="white", labelsize=9)
+        ax.spines[:].set_color("#444")
+        ax.set_ylabel("PnL", color="white", fontsize=9)
+
+        st.pyplot(fig, use_container_width=True)
+
+    # -------- MONTHLY PNL --------
+    with right:
+        st.markdown("**📊 Monthly PnL**")
+
+        fig, ax = plt.subplots(figsize=(4, 3))
+        colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
+
+        ax.bar(monthly["Month"], monthly["Profit"], color=colors)
+        ax.set_facecolor("#0e1117")
+        fig.patch.set_facecolor("#0e1117")
+        ax.tick_params(axis="x", rotation=90, colors="white", labelsize=8)
+        ax.tick_params(axis="y", colors="white", labelsize=8)
+        ax.spines[:].set_color("#444")
+
+        st.pyplot(fig, use_container_width=True)
 
     # ============================
-    # MONTHLY PNL DISTRIBUTION
-    # ============================
-    st.subheader("📊 Monthly PnL Distribution")
-
-    fig, ax = plt.subplots(figsize=(10, 3))
-    colors = ["#22c55e" if x >= 0 else "#ef4444" for x in monthly["Profit"]]
-
-    ax.bar(monthly["Month"], monthly["Profit"], color=colors)
-    ax.set_facecolor("#0e1117")
-    fig.patch.set_facecolor("#0e1117")
-    ax.tick_params(axis="x", rotation=90, colors="white")
-    ax.tick_params(axis="y", colors="white")
-    ax.spines[:].set_color("#444")
-
-    st.pyplot(fig)
-
-    # ============================
-    # TRADE LOG (TAB)
+    # TRADE LOG
     # ============================
     with st.expander("📋 View Full Trade Log"):
         st.dataframe(trades, use_container_width=True)
