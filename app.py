@@ -95,6 +95,50 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 25941.9
 ✅ FINAL PROFIT (Incl. MTM): 236414.75
 📈 TOTAL RETURN %: 17.08
+""",
+    
+    "NIFTY OWS with 5% OTM from Jan24 to Dec25": """
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : NIFTY
+PE OTM %           : 5.00 %
+CE OTM %           : 5.00 %
+Lot Size           : 65
+Backtest Period    : 2024-01-25 → 2025-12-30
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium    Profit    ITM
+0   2024-01-25   PE   20700    57.10   3711.50  False
+1   2024-02-29   PE   20300    48.60   3159.00  False
+2   2024-03-28   PE   20900    43.00   2795.00  False
+3   2024-04-25   PE   21200    31.35   2037.75  False
+4   2024-05-30   PE   21400    47.00   3055.00  False
+5   2024-06-27   PE   21400   178.00  11570.00  False
+6   2024-07-25   PE   22900    70.80   4602.00  False
+7   2024-08-29   PE   23200    59.40   3861.00  False
+8   2024-09-26   PE   23900    46.35   3012.75  False
+9   2024-10-31   PE   24900    57.95   3766.75   True
+10  2024-11-28   CE   26100    15.75   1023.75  False
+11  2024-12-26   CE   26100     8.60    559.00  False
+12  2025-01-30   CE   26100     8.20    533.00  False
+13  2025-02-27   CE   26100     9.90    643.50  False
+14  2025-05-29   CE   26100    27.70   1800.50  False
+15  2025-06-26   CE   26100    62.15   4039.75  False
+16  2025-07-31   CE   26100   165.30  10744.50  False
+17  2025-08-28   CE   26100    18.35   1192.75  False
+18  2025-09-30   CE   26100    15.45   1004.25  False
+19  2025-10-28   CE   26100    13.15    854.75  False
+20  2025-11-25   CE   26100   318.65  20712.25  False
+21  2025-12-30   CE   26100   314.05  20413.25  False
+
+💰 REALIZED PROFIT: 105092.0
+🏦 BOND PROFIT: 60547.5
+📦 EQUITY MONTHS: 15
+📆 TOTAL MONTHS: 24
+💼 TOTAL CAPITAL: 1345500
+📊 CURRENT STOCK MTM: 67723.5
+📍 CURRENT SPOT PRICE: 25941.9
+✅ FINAL PROFIT (Incl. MTM): 233363.0
+📈 TOTAL RETURN %: 17.34
 """
 }
 
