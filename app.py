@@ -5,14 +5,8 @@ import re
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-# ============================
-# PAGE CONFIG
-# ============================
 st.set_page_config(page_title="Option Wheel Dashboard", layout="wide")
 
-# ============================
-# DARK THEME CSS
-# ============================
 st.markdown("""
 <style>
 body { background-color: #0e1117; }
@@ -37,7 +31,7 @@ body { background-color: #0e1117; }
 }
 
 .card-value {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: white;
 }
@@ -46,14 +40,8 @@ body { background-color: #0e1117; }
 
 st.title("🌀 Option Wheel Performance Dashboard")
 
-# ============================
-# INPUT
-# ============================
 raw_text = st.text_area("Paste Backtest Output", height=240)
 
-# ============================
-# PARSERS
-# ============================
 def parse_trades(text):
     rows = []
     pattern = re.compile(
@@ -70,13 +58,10 @@ def parse_trades(text):
         })
     return pd.DataFrame(rows)
 
-def parse_value(text, pattern):
+def val(text, pattern):
     m = re.search(pattern, text)
     return m.group(1).strip() if m else None
 
-# ============================
-# MAIN
-# ============================
 if raw_text.strip():
 
     trades = parse_trades(raw_text)
@@ -84,37 +69,38 @@ if raw_text.strip():
         st.error("No trades detected.")
         st.stop()
 
-    # ---- Strategy Info ----
-    scrip = parse_value(raw_text, r"Scrip\s*:\s*(\w+)")
-    pe_otm = parse_value(raw_text, r"PE OTM %\s*:\s*([\d.]+ %)")
-    ce_otm = parse_value(raw_text, r"CE OTM %\s*:\s*([\d.]+ %)")
-    lot_size = parse_value(raw_text, r"Lot Size\s*:\s*(\d+)")
-    period = parse_value(raw_text, r"Backtest Period\s*:\s*(.+)")
+    # -------- Strategy Info --------
+    scrip = val(raw_text, r"Scrip\s*:\s*(\w+)")
+    pe_otm = val(raw_text, r"PE OTM %\s*:\s*([\d.]+)")
+    ce_otm = val(raw_text, r"CE OTM %\s*:\s*([\d.]+)")
+    lot_size = val(raw_text, r"Lot Size\s*:\s*(\d+)")
+    period = val(raw_text, r"Backtest Period\s*:\s*(.+)")
 
-    # ---- Summary ----
-    realised_profit = float(parse_value(raw_text, r"OPTION PROFIT:\s*([\d.]+)") or trades["Profit"].sum())
-    bond_profit = float(parse_value(raw_text, r"BOND PROFIT:\s*([\d.]+)") or 0)
-    equity_months = parse_value(raw_text, r"EQUITY MONTHS:\s*(\d+)")
-    stock_mtm = float(parse_value(raw_text, r"CURRENT STOCK MTM:\s*([\d.]+)") or 0)
-    final_profit = float(parse_value(raw_text, r"FINAL PROFIT .*:\s*([\d.]+)") or 0)
-    total_return = float(parse_value(raw_text, r"TOTAL RETURN %:\s*([\d.]+)") or 0)
+    # -------- Summary --------
+    realised_profit = float(val(raw_text, r"OPTION PROFIT:\s*([\d.]+)") or trades["Profit"].sum())
+    bond_profit = float(val(raw_text, r"BOND PROFIT:\s*([\d.]+)") or 0)
+    equity_months = val(raw_text, r"EQUITY MONTHS:\s*(\d+)")
+    total_months = int(val(raw_text, r"TOTAL MONTHS:\s*(\d+)") or 0)
+    stock_mtm = float(val(raw_text, r"CURRENT STOCK MTM:\s*([\d.]+)") or 0)
+    total_capital = float(val(raw_text, r"TOTAL CAPITAL:\s*(\d+)") or 0)
+    final_profit = float(val(raw_text, r"FINAL PROFIT .*:\s*([\d.]+)") or 0)
+    total_return = float(val(raw_text, r"TOTAL RETURN %:\s*([\d.]+)") or 0)
 
-    # ---- Data prep ----
+    # -------- Derived --------
+    avg_monthly_profit = final_profit / total_months if total_months else 0
+    avg_monthly_profit_pct = (avg_monthly_profit / total_capital * 100) if total_capital else 0
+
+    # ✅ FINAL DRAWdown TEXT (AS REQUESTED)
+    drawdown_text = f"Same as {scrip} – {pe_otm}%"
+
+    # -------- Data prep --------
     trades["Expiry"] = pd.to_datetime(trades["Expiry"])
     trades = trades.sort_values("Expiry")
     trades["CumPnL"] = trades["Profit"].cumsum()
     trades["Month"] = trades["Expiry"].dt.to_period("M").astype(str)
-
     monthly = trades.groupby("Month")["Profit"].sum().reset_index()
-    avg_monthly = monthly["Profit"].mean()
 
-    # ============================
-    # STRATEGY INFO ROW
-    # ============================
-    st.markdown("### 📌 Strategy Details")
-    i1, i2, i3, i4, i5 = st.columns(5)
-
-    def info(col, title, value):
+    def card(col, title, value):
         col.markdown(f"""
         <div class="info-card">
             <div class="card-title">{title}</div>
@@ -122,27 +108,29 @@ if raw_text.strip():
         </div>
         """, unsafe_allow_html=True)
 
-    info(i1, "Scrip", scrip)
-    info(i2, "PE OTM %", pe_otm)
-    info(i3, "CE OTM %", ce_otm)
-    info(i4, "Lot Size", lot_size)
-    info(i5, "Backtest Period", period)
+    st.markdown("### 📌 Strategy Details")
+    a1, a2, a3, a4, a5 = st.columns(5)
+    card(a1, "Scrip", scrip)
+    card(a2, "PE OTM %", f"{pe_otm}%")
+    card(a3, "CE OTM %", f"{ce_otm}%")
+    card(a4, "Lot Size", lot_size)
+    card(a5, "Backtest Period", period)
 
-    # ============================
-    # PERFORMANCE METRICS
-    # ============================
     st.markdown("### 📊 Performance Summary")
-    m1, m2, m3, m4, m5 = st.columns(5)
+    b1, b2, b3, b4, b5 = st.columns(5)
+    card(b1, "Realised Profit", f"₹{realised_profit:,.0f}")
+    card(b2, "Bond Profit", f"₹{bond_profit:,.0f}")
+    card(b3, "Equity Holding Months", equity_months)
+    card(b4, "Current Stock MTM", f"₹{stock_mtm:,.0f}")
+    card(b5, "Total Return", f"{total_return:.2f}%")
 
-    info(m1, "Realised Profit", f"₹{realised_profit:,.0f}")
-    info(m2, "Bond Profit", f"₹{bond_profit:,.0f}")
-    info(m3, "Equity Holding Months", equity_months)
-    info(m4, "Current Stock MTM", f"₹{stock_mtm:,.0f}")
-    info(m5, "Total Return", f"{total_return:.2f}%")
+    c1, c2, c3, c4, c5 = st.columns(5)
+    card(c1, "Total Capital", f"₹{total_capital:,.0f}")
+    card(c2, "Final Profit", f"₹{final_profit:,.0f}")
+    card(c3, "Avg Monthly Profit", f"₹{avg_monthly_profit:,.0f}")
+    card(c4, "Avg Monthly Profit %", f"{avg_monthly_profit_pct:.2f}%")
+    card(c5, "Drawdown", drawdown_text)
 
-    # ============================
-    # CHARTS
-    # ============================
     left, right = st.columns([2.2, 1])
 
     with left:
@@ -172,8 +160,5 @@ if raw_text.strip():
         ax.spines[:].set_color("#444")
         st.pyplot(fig, use_container_width=True)
 
-    # ============================
-    # TRADE LOG
-    # ============================
     with st.expander("📋 View Full Trade Log"):
         st.dataframe(trades, use_container_width=True)
