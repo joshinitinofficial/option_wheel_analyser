@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : NIFSEL
+Scrip              : NIFTY MID SELECT
 PE OTM %           : 1.00 %
 CE OTM %           : 1.00 %
 Lot Size           : 120
@@ -28,3 +28,4 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 13600.15
 ✅ FINAL PROFIT (Incl. MTM): 196218.0
 📈 TOTAL RETURN %: 12.88
+
