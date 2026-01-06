@@ -300,7 +300,7 @@ if raw_text.strip():
     ax2.bar(yearly["Year"].astype(str), yearly["Profit"], color=colors, width=0.6)
     
     ax2.text(
-        0.5, 0.96, "Monthly PnL",
+        0.5, 0.96, "Yearly PnL",
         transform=ax2.transAxes,
         ha="center", va="top",
         fontsize=9, color="#cbd5e1"
