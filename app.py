@@ -148,10 +148,10 @@ if raw_text.strip():
     stock_mtm = float(val(raw_text, r"CURRENT STOCK MTM:\s*(-?[\d.]+)") or 0)
     total_capital = float(val(raw_text, r"TOTAL CAPITAL:\s*(\d+)") or 0)
     final_profit = float(val(raw_text, r"FINAL PROFIT .*:\s*([\d.]+)") or 0)
-    total_return = float(val(raw_text, r"TOTAL RETURN %:\s*([\d.]+)") or 0)
+    total_return = (realised_strategy_profit / total_capital * 100) if total_capital else 0
     total_months = int(val(raw_text, r"TOTAL MONTHS:\s*(\d+)") or 1)
 
-    avg_monthly_profit = final_profit / total_months
+    avg_monthly_profit = realised_strategy_profit / total_months
     avg_monthly_profit_pct = (avg_monthly_profit / total_capital * 100) if total_capital else 0
     drawdown_text = f"Same as {scrip} – {pe_otm}%"
 
