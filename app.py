@@ -145,7 +145,7 @@ if raw_text.strip():
     realised_profit = float(val(raw_text, r"REALIZED PROFIT:\s*([\d.]+)") or 0)
     bond_profit = float(val(raw_text, r"BOND PROFIT:\s*([\d.]+)") or 0)
     equity_months = val(raw_text, r"EQUITY MONTHS:\s*(\d+)")
-    stock_mtm = float(val(raw_text, r"CURRENT STOCK MTM:\s*([\d.]+)") or 0)
+    stock_mtm = float(val(raw_text, r"CURRENT STOCK MTM:\s*(-?[\d.]+)") or 0)
     total_capital = float(val(raw_text, r"TOTAL CAPITAL:\s*(\d+)") or 0)
     final_profit = float(val(raw_text, r"FINAL PROFIT .*:\s*([\d.]+)") or 0)
     total_return = float(val(raw_text, r"TOTAL RETURN %:\s*([\d.]+)") or 0)
