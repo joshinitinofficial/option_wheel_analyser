@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : BHAAIR
+Scrip              : BHARTI AIRTEL
 PE OTM %           : 1.00 %
 CE OTM %           : 1.00 %
 Lot Size           : 475
@@ -63,3 +63,4 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 2099.6
 ✅ FINAL PROFIT (Incl. MTM): 404462.5
 📈 TOTAL RETURN %: 125.22
+
