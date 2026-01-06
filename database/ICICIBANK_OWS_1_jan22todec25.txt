@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : ICICI BANK
+Scrip              : ICICIBANK
 PE OTM %           : 1.00 %
 CE OTM %           : 1.00 %
 Lot Size           : 700
@@ -63,4 +63,5 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 1343.9
 ✅ FINAL PROFIT (Incl. MTM): 435855.0
 📈 TOTAL RETURN %: 85.29
+
 
