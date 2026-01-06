@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : STABAN
+Scrip              : SBIN
 PE OTM %           : 1.00 %
 CE OTM %           : 1.00 %
 Lot Size           : 750
@@ -62,3 +62,4 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 973.9
 ✅ FINAL PROFIT (Incl. MTM): 401662.5
 📈 TOTAL RETURN %: 119.01
+
