@@ -1,0 +1,29 @@
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : NIFSEL
+PE OTM %           : 2.00 %
+CE OTM %           : 2.00 %
+Lot Size           : 120
+Backtest Period    : 2025-01-30 → 2025-12-30
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium   Profit    ITM
+0   2025-01-30   PE   12500   136.05  16326.0   True
+1   2025-02-27   CE   12800   143.15  17178.0  False
+2   2025-03-27   CE   12800     4.20    504.0  False
+3   2025-04-24   CE   12800    16.35   1962.0  False
+4   2025-05-29   CE   12800   117.00  14040.0  False
+5   2025-06-26   CE   12800   323.40  74808.0   True
+6   2025-07-31   PE   13000   135.05  16206.0   True
+7   2025-08-28   CE   13300   112.95  13554.0  False
+8   2025-10-28   CE   13300    36.05  40326.0   True
+9   2025-11-25   PE   13100   130.85  15702.0  False
+10  2025-12-30   PE   13500   103.00  12360.0  False
+
+💰 REALIZED PROFIT: 237966.0
+🏦 BOND PROFIT: 15000.0
+📦 EQUITY MONTHS: 10
+📆 TOTAL MONTHS: 12
+💼 TOTAL CAPITAL: 1500000
+📊 CURRENT STOCK MTM: 0
+✅ FINAL PROFIT (Incl. MTM): 237966.0
+📈 TOTAL RETURN %: 15.86
