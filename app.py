@@ -323,21 +323,23 @@ if raw_text.strip():
     st.pyplot(fig, use_container_width=True)
 
     with st.expander("View Full Trade Log"):
-        display_cols = [
-            "Expiry",
-            "Strike",
-            "Type",
-            "Premium",
-            "Profit",
-            "Holding"
-        ]
+        display_df = trades[
+            ["Expiry", "Strike", "Type", "Premium", "Profit", "Holding"]
+        ].copy()
+    
+        # Formatting for display only
+        display_df["Premium"] = display_df["Premium"].map(lambda x: f"{x:.2f}")
+        display_df["Profit"] = display_df["Profit"].map(lambda x: f"₹{x:,.0f}")
+    
         styled_df = (
-            trades[display_cols]
+            display_df
             .style
             .apply(highlight_holding, axis=1)
         )
+    
         st.dataframe(
             styled_df,
             use_container_width=True
         )
+
 
