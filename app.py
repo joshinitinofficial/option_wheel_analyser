@@ -102,14 +102,21 @@ raw_text = st.text_area(
 # ============================
 def parse_trades(text):
     rows = []
+
     pattern = re.compile(
-        r"\d+\s+(\d{4}-\d{2}-\d{2})\s+(PE|CE)\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+(True|False)"
+        r"\d+\s+(\d{4}-\d{2}-\d{2})\s+(PE|CE)\s+(\d+)\s+([\d.]+)\s+([\d.-]+)\s+(True|False)"
     )
+
     for m in pattern.finditer(text):
         rows.append({
-            "Expiry": m.group(1),
-            "Profit": float(m.group(5))
+            "Expiry": pd.to_datetime(m.group(1)),
+            "Type": m.group(2),
+            "Strike": int(m.group(3)),
+            "Premium": float(m.group(4)),
+            "Profit": float(m.group(5)),
+            "ITM": m.group(6) == "True"
         })
+
     return pd.DataFrame(rows)
 
 def val(text, pattern):
@@ -133,6 +140,25 @@ if raw_text.strip():
     if trades.empty:
         st.error("No trades detected.")
         st.stop()
+
+# -------- OWS Holding Logic --------
+trades = trades.sort_values("Expiry").reset_index(drop=True)
+
+holding = False
+holding_list = []
+
+for _, row in trades.iterrows():
+    # PE assignment → stock holding starts
+    if row["Type"] == "PE" and row["ITM"]:
+        holding = True
+
+    # CE call-away → stock holding ends
+    elif row["Type"] == "CE" and row["ITM"]:
+        holding = False
+
+    holding_list.append("Yes" if holding else "No")
+
+trades["Holding"] = holding_list
 
     # -------- Strategy Info --------
     scrip = val(raw_text, r"Scrip\s*:\s*(\w+)")
@@ -273,5 +299,18 @@ if raw_text.strip():
 
     st.pyplot(fig, use_container_width=True)
 
-    with st.expander("View Full Trade Log"):
-        st.dataframe(trades, use_container_width=True)
+   with st.expander("View Full Trade Log"):
+    display_cols = [
+        "Expiry",
+        "Strike",
+        "Type",
+        "Premium",
+        "Profit",
+        "Holding"
+    ]
+
+    st.dataframe(
+        trades[display_cols],
+        use_container_width=True
+    )
+
