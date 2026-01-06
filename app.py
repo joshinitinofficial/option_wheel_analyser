@@ -192,7 +192,7 @@ if raw_text.strip():
     st.markdown("### Performance Summary")
 
     r1 = st.columns(5)
-    card(r1[0], "Realised Profit", f"₹{realised_profit:,.0f}")
+    card(r1[0], "Realised Profit (incl Bond Profit)", f"₹{realised_profit:,.0f}")
     card(r1[1], "Bond Profit", f"₹{bond_profit:,.0f}")
     card(r1[2], "Equity Holding Months", equity_months)
     
