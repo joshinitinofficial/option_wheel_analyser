@@ -1,0 +1,48 @@
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : RELIND
+PE OTM %           : 1.00 %
+CE OTM %           : 1.00 %
+Lot Size           : 250
+Backtest Period    : 2022-01-27 → 2024-09-26
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium   Profit    ITM
+0   2022-01-27   PE    2340    58.85  14712.5  False
+1   2022-02-24   PE    2320    64.70  16175.0   True
+2   2022-03-31   CE    2340    51.40  17850.0   True
+3   2022-04-28   PE    2600    56.55  14137.5  False
+4   2022-05-26   PE    2780    75.90  18975.0   True
+5   2022-06-30   CE    2800    26.60   6650.0  False
+6   2022-07-28   CE    2800    21.40   5350.0  False
+7   2022-08-25   CE    2800     6.45   1612.5  False
+8   2022-09-29   CE    2800    36.65   9162.5  False
+9   2022-10-27   CE    2800     4.15   1037.5  False
+10  2022-11-24   CE    2800     3.35    837.5  False
+11  2022-12-29   CE    2800     9.95   2487.5  False
+12  2023-03-29   CE    2800     1.70    425.0  False
+13  2023-04-27   CE    2800     0.40    100.0  False
+14  2023-05-25   CE    2800     1.00    250.0  False
+15  2023-07-27   CE    2800     4.15   1037.5  False
+16  2023-08-31   CE    2800     7.90   1975.0  False
+17  2023-09-28   CE    2800     3.00    750.0  False
+18  2023-10-26   CE    2800     2.00    500.0  False
+19  2023-11-30   CE    2800     0.50    125.0  False
+20  2024-01-25   CE    2800    14.55   3637.5  False
+21  2024-02-29   CE    2800    31.00  12750.0   True
+22  2024-03-28   PE    2900    52.80  13200.0  False
+23  2024-04-25   PE    2940    46.10  11525.0   True
+24  2024-05-30   CE    2960    56.40  14100.0  False
+25  2024-06-27   CE    2960    62.65  20662.5   True
+26  2024-07-25   PE    3040    61.90  15475.0   True
+27  2024-08-29   CE    3080    35.45   8862.5  False
+28  2024-09-26   CE    3080    66.90  16725.0  False
+
+💰 REALIZED PROFIT: 239862.5
+🏦 BOND PROFIT: 8775.0
+📦 EQUITY MONTHS: 30
+📆 TOTAL MONTHS: 33
+💼 TOTAL CAPITAL: 585000
+📊 CURRENT STOCK MTM: -10000.0
+📍 CURRENT SPOT PRICE: 3000.0
+✅ FINAL PROFIT (Incl. MTM): 229862.5
+📈 TOTAL RETURN %: 39.29

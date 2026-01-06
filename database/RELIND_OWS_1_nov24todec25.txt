@@ -1,0 +1,32 @@
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : RELIND
+PE OTM %           : 1.00 %
+CE OTM %           : 1.00 %
+Lot Size           : 500
+Backtest Period    : 2024-11-28 → 2025-12-30
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium   Profit    ITM
+0   2024-11-28   PE    1320    27.80  13900.0   True
+1   2024-12-26   CE    1330    11.80   5900.0  False
+2   2025-01-30   CE    1330     3.90   1950.0  False
+3   2025-02-27   CE    1330     9.80   4900.0  False
+4   2025-03-27   CE    1330     1.55    775.0  False
+5   2025-04-24   CE    1330    14.90   7450.0  False
+6   2025-05-29   CE    1330    27.35  18675.0   True
+7   2025-06-26   PE    1400    19.65   9825.0  False
+8   2025-07-31   PE    1480    24.25  12125.0   True
+9   2025-08-28   CE    1490     5.70   2850.0  False
+10  2025-09-30   CE    1490     7.25   3625.0  False
+11  2025-10-28   CE    1490     1.85    925.0  False
+12  2025-11-25   CE    1490    31.10  20550.0   True
+13  2025-12-30   PE    1520    19.05   9525.0  False
+
+💰 REALIZED PROFIT: 119575.0
+🏦 BOND PROFIT: 6600.0
+📦 EQUITY MONTHS: 12
+📆 TOTAL MONTHS: 14
+💼 TOTAL CAPITAL: 660000
+📊 CURRENT STOCK MTM: 0
+✅ FINAL PROFIT (Incl. MTM): 119575.0
+📈 TOTAL RETURN %: 18.12
