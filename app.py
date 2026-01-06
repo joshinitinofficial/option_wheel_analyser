@@ -137,28 +137,29 @@ def card(col, title, value):
 if raw_text.strip():
 
     trades = parse_trades(raw_text)
+    
     if trades.empty:
         st.error("No trades detected.")
         st.stop()
 
 # -------- OWS Holding Logic --------
-trades = trades.sort_values("Expiry").reset_index(drop=True)
-
-holding = False
-holding_list = []
-
-for _, row in trades.iterrows():
-    # PE assignment → stock holding starts
-    if row["Type"] == "PE" and row["ITM"]:
-        holding = True
-
-    # CE call-away → stock holding ends
-    elif row["Type"] == "CE" and row["ITM"]:
-        holding = False
-
-    holding_list.append("Yes" if holding else "No")
-
-trades["Holding"] = holding_list
+    trades = trades.sort_values("Expiry").reset_index(drop=True)
+    
+    holding = False
+    holding_list = []
+    
+    for _, row in trades.iterrows():
+        # PE assignment → stock holding starts
+        if row["Type"] == "PE" and row["ITM"]:
+            holding = True
+    
+        # CE call-away → stock holding ends
+        elif row["Type"] == "CE" and row["ITM"]:
+            holding = False
+    
+        holding_list.append("Yes" if holding else "No")
+    
+    trades["Holding"] = holding_list
 
     # -------- Strategy Info --------
     scrip = val(raw_text, r"Scrip\s*:\s*(\w+)")
