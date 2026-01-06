@@ -300,18 +300,18 @@ if raw_text.strip():
 
     st.pyplot(fig, use_container_width=True)
 
-   with st.expander("View Full Trade Log"):
-    display_cols = [
-        "Expiry",
-        "Strike",
-        "Type",
-        "Premium",
-        "Profit",
-        "Holding"
-    ]
+    with st.expander("View Full Trade Log"):
+        display_cols = [
+            "Expiry",
+            "Strike",
+            "Type",
+            "Premium",
+            "Profit",
+            "Holding"
+        ]
 
-    st.dataframe(
-        trades[display_cols],
-        use_container_width=True
-    )
+        st.dataframe(
+            trades[display_cols],
+            use_container_width=True
+        )
 
