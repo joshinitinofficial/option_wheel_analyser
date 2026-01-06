@@ -60,6 +60,22 @@ body { background-color: #0e1117; }
 """, unsafe_allow_html=True)
 
 st.title("Option Wheel Performance Dashboard")
+st.markdown("""
+<div style="
+    background:#0b1220;
+    padding:10px 14px;
+    border-radius:10px;
+    margin-top:6px;
+    font-size:12px;
+    color:#cbd5e1;
+">
+<b>Notes:</b><br>
+• Returns are calculated using <b>realised profits only</b> (Current Stock MTM is excluded).<br>
+• Stock MTM is shown for <b>portfolio awareness</b>, not for performance measurement.<br>
+• <b>Dividend income is not included</b> in this backtest and should be treated as additional income.
+</div>
+""", unsafe_allow_html=True)
+
 
 # ============================
 # REPORT SELECTION DROPDOWN
