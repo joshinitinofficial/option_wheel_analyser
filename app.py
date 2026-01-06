@@ -320,7 +320,7 @@ if raw_text.strip():
             .style
             .apply(highlight_holding, axis=1)
         )
-         st.dataframe(
+        st.dataframe(
             styled_df,
             use_container_width=True
         )
