@@ -152,7 +152,7 @@ if raw_text.strip():
     total_months = int(val(raw_text, r"TOTAL MONTHS:\s*(\d+)") or 1)
     
     # -------- OWS-CORRECT PROFIT (Exclude Stock MTM from returns) --------
-    realised_strategy_profit = realised_profit + bond_profit
+    realised_strategy_profit = realised_profit
     
     # -------- Returns & Averages (Strategy-only) --------
     avg_monthly_profit = realised_strategy_profit / total_months
