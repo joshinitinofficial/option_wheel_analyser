@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : RELIND
+Scrip              : RELIANCEpre
 PE OTM %           : 1.00 %
 CE OTM %           : 1.00 %
 Lot Size           : 250
@@ -46,3 +46,4 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 3000.0
 ✅ FINAL PROFIT (Incl. MTM): 229862.5
 📈 TOTAL RETURN %: 39.29
+
