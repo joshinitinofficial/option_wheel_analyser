@@ -198,7 +198,7 @@ if raw_text.strip():
 
     r2 = st.columns(5)
     card(r2[0], "Total Capital", f"₹{total_capital:,.0f}")
-    card(r2[1], "Final Profit", f"₹{final_profit:,.0f}")
+    card(r2[1], "Final Profit (Realised + Stock MTM)", f"₹{final_profit:,.0f}")
     card(r2[2], "Avg Monthly Profit", f"₹{avg_monthly_profit:,.0f}")
     card(r2[3], "Avg Monthly Profit %", f"{avg_monthly_profit_pct:.2f}%")
     card(r2[4], "Drawdown", drawdown_text)
