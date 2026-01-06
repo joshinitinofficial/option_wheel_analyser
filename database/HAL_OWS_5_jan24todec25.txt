@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : HINAER
+Scrip              : HAL
 PE OTM %           : 5.00 %
 CE OTM %           : 5.00 %
 Lot Size           : 150
@@ -38,3 +38,4 @@ Bond Return (Ann.) : 6.00 %
 📍 CURRENT SPOT PRICE: 4325.0
 ✅ FINAL PROFIT (Incl. MTM): 86497.5
 📈 TOTAL RETURN %: 21.36
+
