@@ -1,5 +1,5 @@
 🌀 OPTION WHEEL BACKTEST RESULT
-Scrip              : RELIND
+Scrip              : RELIANCEpost
 PE OTM %           : 1.00 %
 CE OTM %           : 1.00 %
 Lot Size           : 500
@@ -30,3 +30,4 @@ Bond Return (Ann.) : 6.00 %
 📊 CURRENT STOCK MTM: 0
 ✅ FINAL PROFIT (Incl. MTM): 119575.0
 📈 TOTAL RETURN %: 18.12
+
