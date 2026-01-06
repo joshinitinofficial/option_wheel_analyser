@@ -1,0 +1,40 @@
+🌀 OPTION WHEEL BACKTEST RESULT
+Scrip              : HINAER
+PE OTM %           : 5.00 %
+CE OTM %           : 5.00 %
+Lot Size           : 150
+Backtest Period    : 2024-01-25 → 2025-12-30
+Bond Return (Ann.) : 6.00 %
+
+        Expiry Type  Strike  Premium   Profit    ITM
+0   2024-01-25   PE    2700    82.00  12300.0  False
+1   2024-02-29   PE    2800    83.25  12487.5  False
+2   2024-03-28   PE    2900    53.00   7950.0  False
+3   2024-04-25   PE    3200    55.75   8362.5  False
+4   2024-05-30   PE    3800    70.95  10642.5  False
+5   2024-06-27   PE    4700   229.25  34387.5  False
+6   2024-07-25   PE    5000   132.35  19852.5   True
+7   2024-08-29   CE    5200    92.40  13860.0  False
+8   2024-09-26   CE    5200    30.45   4567.5  False
+9   2024-10-31   CE    5200    15.65   2347.5  False
+10  2024-11-28   CE    5200     8.75   1312.5  False
+11  2024-12-26   CE    5200    11.15   1672.5  False
+12  2025-01-30   CE    5200     5.50    825.0  False
+13  2025-02-27   CE    5200     7.20   1080.0  False
+14  2025-06-26   CE    5200   140.00  21000.0  False
+15  2025-07-31   CE    5200    72.85  10927.5  False
+16  2025-08-28   CE    5200    10.95   1642.5  False
+17  2025-09-30   CE    5200     7.00   1050.0  False
+18  2025-10-28   CE    5200    27.65   4147.5  False
+19  2025-11-25   CE    5200    25.70   3855.0  False
+20  2025-12-30   CE    5200     8.85   1327.5  False
+
+💰 REALIZED PROFIT: 187747.5
+🏦 BOND PROFIT: 12150.0
+📦 EQUITY MONTHS: 18
+📆 TOTAL MONTHS: 24
+💼 TOTAL CAPITAL: 405000
+📊 CURRENT STOCK MTM: -101250.0
+📍 CURRENT SPOT PRICE: 4325.0
+✅ FINAL PROFIT (Incl. MTM): 86497.5
+📈 TOTAL RETURN %: 21.36
