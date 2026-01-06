@@ -131,6 +131,12 @@ def card(col, title, value):
     </div>
     """, unsafe_allow_html=True)
 
+def highlight_holding(row):
+    if row["Holding"] == "Yes":
+        return ["background-color: rgba(45, 212, 191, 0.12)"] * len(row)
+    return [""] * len(row)
+
+
 # ============================
 # MAIN
 # ============================
@@ -309,9 +315,13 @@ if raw_text.strip():
             "Profit",
             "Holding"
         ]
-
-        st.dataframe(
-            trades[display_cols],
+        styled_df = (
+            trades[display_cols]
+            .style
+            .apply(highlight_holding, axis=1)
+        )
+         st.dataframe(
+            styled_df,
             use_container_width=True
         )
 
