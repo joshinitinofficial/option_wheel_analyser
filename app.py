@@ -182,7 +182,16 @@ if raw_text.strip():
     card(r1[0], "Realised Profit", f"₹{realised_profit:,.0f}")
     card(r1[1], "Bond Profit", f"₹{bond_profit:,.0f}")
     card(r1[2], "Equity Holding Months", equity_months)
-    card(r1[3], "Current Stock MTM", f"₹{stock_mtm:,.0f}")
+    mtm_color = "#ef4444" if stock_mtm < 0 else "white"
+    r1[3].markdown(f"""
+    <div class="info-card">
+        <div class="card-title">Current Stock MTM</div>
+        <div class="card-value" style="color:{mtm_color}">
+            ₹{stock_mtm:,.0f}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     card(r1[4], "Total Return", f"{total_return:.2f}%")
 
     st.markdown('<div class="v-gap"></div>', unsafe_allow_html=True)
