@@ -142,18 +142,31 @@ if raw_text.strip():
     period = val(raw_text, r"Backtest Period\s*:\s*(.+)")
 
     # -------- Summary --------
+    
     realised_profit = float(val(raw_text, r"REALIZED PROFIT:\s*([\d.]+)") or 0)
     bond_profit = float(val(raw_text, r"BOND PROFIT:\s*([\d.]+)") or 0)
     equity_months = val(raw_text, r"EQUITY MONTHS:\s*(\d+)")
     stock_mtm = float(val(raw_text, r"CURRENT STOCK MTM:\s*(-?[\d.]+)") or 0)
     total_capital = float(val(raw_text, r"TOTAL CAPITAL:\s*(\d+)") or 0)
     final_profit = float(val(raw_text, r"FINAL PROFIT .*:\s*([\d.]+)") or 0)
-    total_return = (realised_strategy_profit / total_capital * 100) if total_capital else 0
     total_months = int(val(raw_text, r"TOTAL MONTHS:\s*(\d+)") or 1)
-
+    
+    # -------- OWS-CORRECT PROFIT (Exclude Stock MTM from returns) --------
+    realised_strategy_profit = realised_profit + bond_profit
+    
+    # -------- Returns & Averages (Strategy-only) --------
     avg_monthly_profit = realised_strategy_profit / total_months
-    avg_monthly_profit_pct = (avg_monthly_profit / total_capital * 100) if total_capital else 0
+    
+    avg_monthly_profit_pct = (
+        avg_monthly_profit / total_capital * 100
+    ) if total_capital else 0
+    
+    total_return = (
+        realised_strategy_profit / total_capital * 100
+    ) if total_capital else 0
+    
     drawdown_text = f"Same as {scrip} – {pe_otm}%"
+
 
     # -------- Data prep --------
     trades["Expiry"] = pd.to_datetime(trades["Expiry"])
