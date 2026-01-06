@@ -71,7 +71,7 @@ st.markdown("""
 ">
 <b>Notes:</b><br>
 • Returns are calculated using <b>realised profits only</b> (Current Stock MTM is excluded).<br>
-• Stock MTM is shown for <b>portfolio awareness</b>, not for performance measurement.<br>
+• Current Stock MTM is shown for <b>portfolio awareness</b>, not for performance measurement.<br>
 • <b>Dividend income is not included</b> in this backtest and should be treated as additional income.
 </div>
 """, unsafe_allow_html=True)
