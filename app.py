@@ -61,22 +61,41 @@ body { background-color: #0e1117; }
 
 st.title("Option Wheel Performance Dashboard")
 # ============================
-# BOOKING CTA
+# BOOKING CTA WITH BUTTON
 # ============================
 st.markdown("""
 <div style="
-    background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
-    padding: 15px;
-    border-radius: 10px;
-    border-left: 5px solid #3b82f6;
-    margin-bottom: 10px;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #3b82f6;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 ">
-    <span style="color: #f8fafc; font-size: 14px;">
-        💡 <b>Need Personal Guidance?</b> If you have any doubts, want to discuss a strategy in detail, or need personal guidance, you can directly 
-        <a href="https://superprofile.bio/bookings/beingsystemtrader" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: bold;">
-            book a 1:1 session with me here →
-        </a>
-    </span>
+    <div style="flex: 1; min-width: 300px;">
+        <p style="margin:0; color: #f8fafc; font-size: 15px; line-height: 1.5;">
+            👋 <b>Need Personal Guidance?</b><br>
+            If you have any doubts, want to discuss a strategy in detail, or need personal guidance, let's connect 1-on-1.
+        </p>
+    </div>
+    <a href="https://superprofile.bio/bookings/beingsystemtrader" target="_blank" style="text-decoration: none;">
+        <div style="
+            background-color: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        ">
+            Book Session Here →
+        </div>
+    </a>
 </div>
 """, unsafe_allow_html=True)
 
