@@ -93,7 +93,7 @@ st.markdown("""
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: 0.3s;
         ">
-            Book Session Here →
+            Book Session Here
         </div>
     </a>
 </div>
