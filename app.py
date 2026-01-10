@@ -60,6 +60,26 @@ body { background-color: #0e1117; }
 """, unsafe_allow_html=True)
 
 st.title("Option Wheel Performance Dashboard")
+# ============================
+# BOOKING CTA
+# ============================
+st.markdown("""
+<div style="
+    background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid #3b82f6;
+    margin-bottom: 10px;
+">
+    <span style="color: #f8fafc; font-size: 14px;">
+        💡 <b>Need Personal Guidance?</b> If you have any doubts, want to discuss a strategy in detail, or need personal guidance, you can directly 
+        <a href="https://superprofile.bio/bookings/beingsystemtrader" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: bold;">
+            book a 1:1 session with me here →
+        </a>
+    </span>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown("""
 <div style="
     background:#0b1220;
